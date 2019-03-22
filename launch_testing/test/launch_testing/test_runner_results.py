@@ -20,7 +20,7 @@ import ament_index_python
 import launch
 import launch.actions
 
-from apex_launchtest.apex_runner import ApexRunner
+from launch_testing.test_runner import TestRunner
 
 
 # Run tests on processes that die early with an exit code and make sure the results returned
@@ -29,8 +29,8 @@ def test_dut_that_shuts_down(capsys):
 
     def generate_test_description(ready_fn):
         TEST_PROC_PATH = os.path.join(
-            ament_index_python.get_package_prefix('apex_launchtest'),
-            'lib/apex_launchtest',
+            ament_index_python.get_package_prefix('launch_testing'),
+            'lib/launch_testing',
             'terminating_proc'
         )
 
@@ -42,8 +42,8 @@ def test_dut_that_shuts_down(capsys):
             launch.actions.OpaqueFunction(function=lambda context: ready_fn()),
         ])
 
-    with mock.patch('apex_launchtest.apex_runner.ApexRunner._run_test'):
-        runner = ApexRunner(
+    with mock.patch('launch_testing.apex_runner.TestRunner._run_test'):
+        runner = TestRunner(
             gen_launch_description_fn=generate_test_description,
             test_module=None
         )
@@ -65,14 +65,14 @@ def test_dut_that_has_exception(capsys):
 
     def generate_test_description(ready_fn):
         TEST_PROC_PATH = os.path.join(
-            ament_index_python.get_package_prefix('apex_launchtest'),
-            'lib/apex_launchtest',
+            ament_index_python.get_package_prefix('launch_testing'),
+            'lib/launch_testing',
             'terminating_proc'
         )
 
         EXIT_PROC_PATH = os.path.join(
-            ament_index_python.get_package_prefix('apex_launchtest'),
-            'lib/apex_launchtest',
+            ament_index_python.get_package_prefix('launch_testing'),
+            'lib/launch_testing',
             'exit_code_proc'
         )
 
@@ -90,8 +90,8 @@ def test_dut_that_has_exception(capsys):
             launch.actions.OpaqueFunction(function=lambda context: ready_fn()),
         ])
 
-    with mock.patch('apex_launchtest.apex_runner.ApexRunner._run_test'):
-        runner = ApexRunner(
+    with mock.patch('launch_testing.apex_runner.TestRunner._run_test'):
+        runner = TestRunner(
             gen_launch_description_fn=generate_test_description,
             test_module=None
         )
@@ -115,7 +115,7 @@ def test_nominally_good_dut():
     # of the test.
     test_code = """
 import unittest
-from apex_launchtest import post_shutdown_test
+from launch_testing import post_shutdown_test
 
 class PreTest(unittest.TestCase):
     def test_pre_ok(self):
@@ -131,8 +131,8 @@ class PostTest(unittest.TestCase):
 
     # Here's the actual 'test' part of the test:
     TEST_PROC_PATH = os.path.join(
-        ament_index_python.get_package_prefix('apex_launchtest'),
-        'lib/apex_launchtest',
+        ament_index_python.get_package_prefix('launch_testing'),
+        'lib/launch_testing',
         'good_proc'
     )
 
@@ -145,7 +145,7 @@ class PostTest(unittest.TestCase):
             launch.actions.OpaqueFunction(function=lambda context: ready_fn()),
         ])
 
-    runner = ApexRunner(
+    runner = TestRunner(
         gen_launch_description_fn=generate_test_description,
         test_module=module
     )

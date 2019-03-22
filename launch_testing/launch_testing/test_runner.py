@@ -44,7 +44,7 @@ def _normalize_ld(launch_description_fn):
     return wrapper
 
 
-class ApexRunner(object):
+class TestRunner(object):
 
     def __init__(self,
                  gen_launch_description_fn,
@@ -52,7 +52,7 @@ class ApexRunner(object):
                  launch_file_arguments=[],
                  debug=False):
         """
-        Create an ApexRunner object.
+        Create a TestRunner object.
 
         :param callable gen_launch_description_fn: A function that returns a ros2 LaunchDesription
         for launching the processes under test.  This function should take a callable as a

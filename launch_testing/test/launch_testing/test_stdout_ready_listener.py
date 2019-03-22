@@ -19,8 +19,8 @@ import ament_index_python
 import launch
 import launch.actions
 
-from apex_launchtest.event_handlers import StdoutReadyListener
-from apex_launchtest.util import KeepAliveProc
+from launch_testing.event_handlers import StdoutReadyListener
+from launch_testing.util import KeepAliveProc
 
 
 class TestStdoutReadyListener(unittest.TestCase):
@@ -33,8 +33,8 @@ class TestStdoutReadyListener(unittest.TestCase):
         self.terminating_proc = launch.actions.ExecuteProcess(
             cmd=[
                 os.path.join(
-                    ament_index_python.get_package_prefix('apex_launchtest'),
-                    'lib/apex_launchtest',
+                    ament_index_python.get_package_prefix('launch_testing'),
+                    'lib/launch_testing',
                     'terminating_proc',
                 )
             ],

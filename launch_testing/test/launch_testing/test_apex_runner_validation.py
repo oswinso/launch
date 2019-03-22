@@ -14,14 +14,14 @@
 
 import unittest
 
-from apex_launchtest.apex_runner import ApexRunner
+from launch_testing.test_runner import TestRunner
 
 
-class TestApexRunnerValidation(unittest.TestCase):
+class TestTestRunnerValidation(unittest.TestCase):
 
     def test_catches_bad_signature(self):
 
-        dut = ApexRunner(
+        dut = TestRunner(
             gen_launch_description_fn=lambda: None,
             test_module=None
         )
@@ -29,7 +29,7 @@ class TestApexRunnerValidation(unittest.TestCase):
         with self.assertRaises(TypeError):
             dut.validate()
 
-        dut = ApexRunner(
+        dut = TestRunner(
             gen_launch_description_fn=lambda fn: None,
             test_module=None
         )

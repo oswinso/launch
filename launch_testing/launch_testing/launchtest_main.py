@@ -18,7 +18,7 @@ from importlib.machinery import SourceFileLoader
 import os
 import sys
 
-from .apex_runner import ApexRunner
+from .test_runner import TestRunner
 from .junitxml import unittestResultsToXml
 from .print_arguments import print_arguments_of_launch_description
 
@@ -27,17 +27,17 @@ _logger_ = logging.getLogger(__name__)
 
 def _load_python_file_as_module(python_file_path):
     """Load a given Python launch file (by path) as a Python module."""
-    # Taken from apex_core to not introduce a weird dependency thing
+    # Taken from launch_testing to not introduce a weird dependency thing
     loader = SourceFileLoader('python_launch_file', python_file_path)
     return loader.load_module()
 
 
-def apex_launchtest_main():
+def launchtest_main():
 
     logging.basicConfig()
 
     parser = argparse.ArgumentParser(
-        description="Integration test framework for Apex AI"
+        description="ROS launch integration test framework tool"
     )
 
     parser.add_argument('test_file')
@@ -73,7 +73,7 @@ def apex_launchtest_main():
         _logger_.debug("Running with verbose output")
 
     # Load the test file as a module and make sure it has the required
-    # components to run it as an apex integration test
+    # components to run it as a launch test
     _logger_.debug("Loading tests from file '{}'".format(args.test_file))
     if not os.path.isfile(args.test_file):
         # Note to future reader: parser.error also exits as a side effect
@@ -91,7 +91,7 @@ def apex_launchtest_main():
     dut_test_description_func = test_module.generate_test_description
     _logger_.debug("Checking generate_test_description function signature")
 
-    runner = ApexRunner(
+    runner = TestRunner(
         gen_launch_description_fn=dut_test_description_func,
         test_module=test_module,
         launch_file_arguments=args.launch_arguments,

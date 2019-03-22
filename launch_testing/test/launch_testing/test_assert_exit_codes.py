@@ -16,8 +16,8 @@ import unittest
 
 from launch.events.process import ProcessExited
 
-from apex_launchtest import ProcInfoHandler
-from apex_launchtest.asserts import assertExitCodes
+from launch_testing import ProcInfoHandler
+from launch_testing.asserts import assertExitCodes
 
 
 class TestExitCodes(unittest.TestCase):

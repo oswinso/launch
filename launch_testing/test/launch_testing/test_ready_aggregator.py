@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from apex_launchtest import ReadyAggregator
+from launch_testing import ReadyAggregator
 
 import unittest
 
