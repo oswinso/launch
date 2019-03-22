@@ -74,7 +74,7 @@ class TestProcessOutput(unittest.TestCase):
         self.assertNotIn(
             'default',
             dut_process.process_details['cmd'],
-            "Try running: launchtest test_with_args.test.py dut_arg:=arg"
+            'Try running: launchtest test_with_args.test.py dut_arg:=arg'
         )
 
     def test_arg_printed_in_output(self):
@@ -88,6 +88,6 @@ class TestProcessOutput(unittest.TestCase):
         with self.assertRaises(AssertionError):
             launch_testing.asserts.assertInStdout(
                 self.proc_output,
-                "default",
+                'default',
                 dut_process
             )

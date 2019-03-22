@@ -28,7 +28,7 @@ class TestStdoutReadyListener(unittest.TestCase):
     def setUp(self):
         # Set up a launch description for the tests to use
         proc_env = os.environ.copy()
-        proc_env["PYTHONUNBUFFERED"] = "1"
+        proc_env['PYTHONUNBUFFERED'] = '1'
 
         self.terminating_proc = launch.actions.ExecuteProcess(
             cmd=[
@@ -52,7 +52,7 @@ class TestStdoutReadyListener(unittest.TestCase):
             launch.actions.RegisterEventHandler(
                 StdoutReadyListener(
                     target_action=self.terminating_proc,
-                    ready_txt="Ready",
+                    ready_txt='Ready',
                     actions=[
                         launch.actions.OpaqueFunction(function=lambda context: data.append('ok'))
                     ]
@@ -74,7 +74,7 @@ class TestStdoutReadyListener(unittest.TestCase):
             launch.actions.RegisterEventHandler(
                 StdoutReadyListener(
                     target_action=KeepAliveProc(),  # We never launched this process
-                    ready_txt="Ready",
+                    ready_txt='Ready',
                     actions=[
                         launch.actions.OpaqueFunction(function=lambda context: data.append('ok'))
                     ]
@@ -96,7 +96,7 @@ class TestStdoutReadyListener(unittest.TestCase):
             launch.actions.RegisterEventHandler(
                 StdoutReadyListener(
                     target_action=self.terminating_proc,
-                    ready_txt="not_ready",
+                    ready_txt='not_ready',
                     actions=[
                         launch.actions.OpaqueFunction(function=lambda context: data.append('ok'))
                     ]

@@ -14,14 +14,14 @@
 
 import unittest
 
-from launch_testing.test_runner import TestRunner
+from launch_testing.test_runner import LaunchTestRunner
 
 
-class TestTestRunnerValidation(unittest.TestCase):
+class TestLaunchTestRunnerValidation(unittest.TestCase):
 
     def test_catches_bad_signature(self):
 
-        dut = TestRunner(
+        dut = LaunchTestRunner(
             gen_launch_description_fn=lambda: None,
             test_module=None
         )
@@ -29,7 +29,7 @@ class TestTestRunnerValidation(unittest.TestCase):
         with self.assertRaises(TypeError):
             dut.validate()
 
-        dut = TestRunner(
+        dut = LaunchTestRunner(
             gen_launch_description_fn=lambda fn: None,
             test_module=None
         )

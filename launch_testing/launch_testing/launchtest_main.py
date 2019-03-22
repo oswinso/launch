@@ -13,14 +13,15 @@
 # limitations under the License.
 
 import argparse
-import logging
 from importlib.machinery import SourceFileLoader
+import logging
 import os
 import sys
 
-from .test_runner import TestRunner
 from .junitxml import unittestResultsToXml
 from .print_arguments import print_arguments_of_launch_description
+from .test_runner import LaunchTestRunner
+
 
 _logger_ = logging.getLogger(__name__)
 
@@ -37,15 +38,15 @@ def launchtest_main():
     logging.basicConfig()
 
     parser = argparse.ArgumentParser(
-        description="ROS launch integration test framework tool"
+        description='ROS launch integration test framework tool'
     )
 
     parser.add_argument('test_file')
 
     parser.add_argument('-v', '--verbose',
-                        action="store_true",
+                        action='store_true',
                         default=False,
-                        help="Run with verbose output")
+                        help='Run with verbose output')
 
     parser.add_argument('-s', '--show-args', '--show-arguments',
                         action='store_true',
@@ -59,18 +60,18 @@ def launchtest_main():
     )
 
     parser.add_argument(
-        "--junit-xml",
-        action="store",
-        dest="xmlpath",
+        '--junit-xml',
+        action='store',
+        dest='xmlpath',
         default=None,
-        help="write junit XML style report to specified path"
+        help='write junit XML style report to specified path'
     )
 
     args = parser.parse_args()
 
     if args.verbose:
         _logger_.setLevel(logging.DEBUG)
-        _logger_.debug("Running with verbose output")
+        _logger_.debug('Running with verbose output')
 
     # Load the test file as a module and make sure it has the required
     # components to run it as a launch test
@@ -82,23 +83,23 @@ def launchtest_main():
     args.test_file = os.path.abspath(args.test_file)
     test_module = _load_python_file_as_module(args.test_file)
 
-    _logger_.debug("Checking for generate_test_description")
+    _logger_.debug('Checking for generate_test_description')
     if not hasattr(test_module, 'generate_test_description'):
         parser.error(
             "Test file '{}' is missing generate_test_description function".format(args.test_file)
         )
 
     dut_test_description_func = test_module.generate_test_description
-    _logger_.debug("Checking generate_test_description function signature")
+    _logger_.debug('Checking generate_test_description function signature')
 
-    runner = TestRunner(
+    runner = LaunchTestRunner(
         gen_launch_description_fn=dut_test_description_func,
         test_module=test_module,
         launch_file_arguments=args.launch_arguments,
         debug=args.verbose
     )
 
-    _logger_.debug("Validating test configuration")
+    _logger_.debug('Validating test configuration')
     try:
         runner.validate()
     except Exception as e:
@@ -110,16 +111,16 @@ def launchtest_main():
         )
         sys.exit(0)
 
-    _logger_.debug("Running integration test")
+    _logger_.debug('Running integration test')
     try:
         result, postcheck_result = runner.run()
-        _logger_.debug("Done running integration test")
+        _logger_.debug('Done running integration test')
 
         if args.xmlpath:
             xml_report = unittestResultsToXml(
                 test_results={
-                    "active_tests": result,
-                    "after_shutdown_tests": postcheck_result
+                    'active_tests': result,
+                    'after_shutdown_tests': postcheck_result
                 }
             )
             xml_report.write(args.xmlpath, xml_declaration=True)

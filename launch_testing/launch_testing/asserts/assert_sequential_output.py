@@ -50,7 +50,7 @@ class SequentialTextChecker:
             array_index += 1
             substring_index = 0
 
-        assert False, "{} not found in output".format(msg)
+        assert False, '{} not found in output'.format(msg)
 
 
 @contextmanager

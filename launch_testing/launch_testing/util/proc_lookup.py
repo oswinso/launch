@@ -23,9 +23,9 @@ class NoMatchingProcessException(Exception):
 
 def _proc_to_name_and_args(proc):
     # proc is a launch.actions.ExecuteProcess
-    return "{} {}".format(
+    return '{} {}'.format(
         proc.process_details['name'],
-        " ".join(proc.process_details['cmd'][1:])
+        ' '.join(proc.process_details['cmd'][1:])
     )
 
 
@@ -73,7 +73,7 @@ def resolveProcesses(info_obj, *, process=None, cmd_args=None, strict_proc_match
         # We want to search all processes
         all_procs = info_obj.processes()
         if len(all_procs) == 0:
-            raise NoMatchingProcessException("No data recorded for any process")
+            raise NoMatchingProcessException('No data recorded for any process')
         return all_procs
 
     if isinstance(process, launch.actions.ExecuteProcess):
@@ -82,7 +82,7 @@ def resolveProcesses(info_obj, *, process=None, cmd_args=None, strict_proc_match
             return [process]
         else:
             raise NoMatchingProcessException(
-                "No data recorded for proc {}".format(_proc_to_name_and_args(process))
+                'No data recorded for proc {}'.format(_proc_to_name_and_args(process))
             )
 
     elif isinstance(process, str):
@@ -90,7 +90,7 @@ def resolveProcesses(info_obj, *, process=None, cmd_args=None, strict_proc_match
         # part is controlled by the strict_proc_matching argument
         matches = _str_name_to_process(info_obj, process, cmd_args)
         if len(matches) == 0:
-            names = ', '.join(sorted([_proc_to_name_and_args(p) for p in info_obj.processes()]))
+            names = ', '.join(sorted(_proc_to_name_and_args(p) for p in info_obj.processes()))
 
             raise NoMatchingProcessException(
                 "Did not find any processes matching name '{}' and args '{}'. Procs: {}".format(
@@ -101,7 +101,7 @@ def resolveProcesses(info_obj, *, process=None, cmd_args=None, strict_proc_match
             )
 
         if strict_proc_matching and len(matches) > 1:
-            names = ', '.join(sorted([_proc_to_name_and_args(p) for p in info_obj.processes()]))
+            names = ', '.join(sorted(_proc_to_name_and_args(p) for p in info_obj.processes()))
             raise Exception(
                 "Found multiple processes matching name '{}' and cmd_args '{}'. Procs: {}".format(
                     process,
